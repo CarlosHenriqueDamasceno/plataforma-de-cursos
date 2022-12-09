@@ -13,12 +13,30 @@ public class User {
 	private Integer id;
 	@Column(name = "name", length = 100, nullable = false)
 	private String name;
+	
 	@Column(name = "userName", length = 100, nullable = false, unique = true)
 	private String userName;
 	@Column(name = "password", length = 255, nullable = false)
-	private String password;
+	private String password; 
 	@Column(name = "email", length = 255)
 	private String email;
+	
+	public User() {}
+	
+	public User(Integer id, String name, String userName, String password, String email) {
+		this.id = id;
+		this.name = name;
+		this.userName = userName;
+		this.password = password;
+		this.email = email;
+	}
+	
+	public User(String name, String userName, String password, String email) {
+		this.name = name;
+		this.userName = userName;
+		this.password = password;
+		this.email = email;
+	}
 	
 	public Integer getId() {
 		return id;
@@ -50,4 +68,13 @@ public class User {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+	
+	
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", name=" + name + ", userName=" + userName + ", password=" + password + ", email="
+				+ email + "]";
+	}
+	
+	
 }
