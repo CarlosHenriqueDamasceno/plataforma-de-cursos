@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.carlos.estudos.plataforma.dto.CreateUserDto;
 import com.carlos.estudos.plataforma.dto.UpdateUserDto;
 import com.carlos.estudos.plataforma.model.User;
 import com.carlos.estudos.plataforma.service.contracts.IUserService;
@@ -38,7 +39,7 @@ public class UserController {
 	}
 	
 	@PostMapping
-	public User create(@Valid @RequestBody User data) {	
+	public User create(@Valid @RequestBody CreateUserDto data) {	
 		return service.create(data);
 	}
 	

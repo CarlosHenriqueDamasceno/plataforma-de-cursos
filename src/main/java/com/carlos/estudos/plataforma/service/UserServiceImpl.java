@@ -7,6 +7,7 @@ import java.util.stream.StreamSupport;
 
 import org.springframework.stereotype.Service;
 
+import com.carlos.estudos.plataforma.dto.CreateUserDto;
 import com.carlos.estudos.plataforma.dto.UpdateUserDto;
 import com.carlos.estudos.plataforma.model.User;
 import com.carlos.estudos.plataforma.repository.IUserRepository;
@@ -23,8 +24,16 @@ public class UserServiceImpl implements IUserService {
 	}
 
 	@Override
-	public User create(User user) {
-		if (isUserNameAvailable(user.getUserName()) && isEmailAvailable(user.getEmail())) {
+	public User create(CreateUserDto data) {
+		if (isUserNameAvailable(data.getUserName()) && isEmailAvailable(data.getEmail())) {
+			
+			User user = new User(
+				data.getName(),
+				data.getUserName(),
+				data.getPassword(),
+				data.getEmail()
+			);
+
 			return repository.save(user);
 		} else {
 			return null;

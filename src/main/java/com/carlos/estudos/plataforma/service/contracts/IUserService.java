@@ -2,11 +2,12 @@ package com.carlos.estudos.plataforma.service.contracts;
 
 import java.util.List;
 
+import com.carlos.estudos.plataforma.dto.CreateUserDto;
 import com.carlos.estudos.plataforma.dto.UpdateUserDto;
 import com.carlos.estudos.plataforma.model.User;
 
 public interface IUserService {
-	public User create(User user);
+	public User create(CreateUserDto user);
 	public User update(Integer id, UpdateUserDto data);
 	public void delete(Integer id);
 	public List<User> getAll();
