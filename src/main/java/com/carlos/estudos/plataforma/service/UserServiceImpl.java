@@ -2,8 +2,6 @@ package com.carlos.estudos.plataforma.service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import org.springframework.stereotype.Service;
 
@@ -57,10 +55,7 @@ public class UserServiceImpl implements IUserService {
 
 	@Override
 	public List<User> getAll() {
-		List<User> list;
-		Iterable<User> records = repository.findAll();
-		list = StreamSupport.stream(records.spliterator(), false).collect(Collectors.toList());
-		return list;
+		return repository.findAll();
 	}
 
 	@Override
