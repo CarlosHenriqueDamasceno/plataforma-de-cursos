@@ -11,21 +11,28 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.carlos.estudos.plataforma.dto.CreateUserDto;
+import com.carlos.estudos.plataforma.dto.LoginDto;
 import com.carlos.estudos.plataforma.dto.UpdateUserDto;
 import com.carlos.estudos.plataforma.model.User;
 import com.carlos.estudos.plataforma.service.contracts.IUserService;
 
+import lombok.AllArgsConstructor;
+
 @RestController
 @RequestMapping("api/v1/users")
+@AllArgsConstructor
 public class UserController {
 	
 	private final IUserService service;
-	
-	public UserController(IUserService service) {
-		this.service = service;
+
+
+	@PostMapping("/auth")
+	public String auth(@Valid @RequestBody LoginDto data) throws Exception{
+		return service.auth(data);
 	}
 
 	@GetMapping

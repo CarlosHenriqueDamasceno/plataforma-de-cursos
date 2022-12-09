@@ -3,38 +3,52 @@ package com.carlos.estudos.plataforma.service;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.ValidationException;
+
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.carlos.estudos.plataforma.dto.CreateUserDto;
+import com.carlos.estudos.plataforma.dto.LoginDto;
 import com.carlos.estudos.plataforma.dto.UpdateUserDto;
 import com.carlos.estudos.plataforma.model.User;
 import com.carlos.estudos.plataforma.repository.IUserRepository;
 import com.carlos.estudos.plataforma.repository.RecordNotFoundException;
 import com.carlos.estudos.plataforma.service.contracts.IUserService;
 
+import lombok.AllArgsConstructor;
+
 @Service
+@AllArgsConstructor
 public class UserServiceImpl implements IUserService {
 
-	private IUserRepository repository;
-
-	public UserServiceImpl(IUserRepository repository) {
-		this.repository = repository;
-	}
+	private final IUserRepository repository;
+	private final PasswordEncoder passwordEncoder;
+	private final AuthenticationConfiguration authenticationConfiguration;
+	private final JwtProvider jwtProvider;
 
 	@Override
-	public User create(CreateUserDto data) {
+	@Transactional
+	public User create(CreateUserDto data) throws ValidationException {
+
 		if (isUserNameAvailable(data.getUserName()) && isEmailAvailable(data.getEmail())) {
 			
 			User user = new User(
 				data.getName(),
 				data.getUserName(),
-				data.getPassword(),
+				passwordEncoder.encode(data.getPassword()),
 				data.getEmail()
 			);
 
 			return repository.save(user);
 		} else {
-			return null;
+			throw new ValidationException("Email ou nome de usuário já utilizado.");
 		}
 	}
 
@@ -78,4 +92,17 @@ public class UserServiceImpl implements IUserService {
 		return !repository.findByUserName(userName).isPresent();
 	}
 
+	@Override
+	public String auth(LoginDto data) throws Exception{
+
+		AuthenticationManager authenticationManager = authenticationConfiguration.getAuthenticationManager();
+
+		Authentication auth = authenticationManager.authenticate(
+			new UsernamePasswordAuthenticationToken(
+				data.getUserName(), data.getPassword()
+			)
+		);
+		SecurityContextHolder.getContext().setAuthentication(auth);
+		return jwtProvider.generateToken(auth);
+	}
 }
