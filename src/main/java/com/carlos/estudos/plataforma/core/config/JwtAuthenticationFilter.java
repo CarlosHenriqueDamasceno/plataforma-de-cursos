@@ -1,4 +1,4 @@
-package com.carlos.estudos.plataforma.config;
+package com.carlos.estudos.plataforma.core.config;
 
 import java.io.IOException;
 

@@ -14,7 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.carlos.estudos.plataforma.exception.RecordNotFoundException;
+import com.carlos.estudos.plataforma.core.exception.RecordNotFoundException;
 import com.carlos.estudos.plataforma.user.dto.CreateUserDto;
 import com.carlos.estudos.plataforma.user.dto.LoginDto;
 import com.carlos.estudos.plataforma.user.dto.UpdateUserDto;
