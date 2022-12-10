@@ -18,9 +18,6 @@ public class UpdateUserDto {
     @NotBlank
     @Length(min = 1, max = 100)
 	private String name;
-    @NotBlank
-    @Length(min = 1, max = 100)
-	private String userName; 
 	@NotBlank
     @Length(min = 1, max = 255)
     @Email

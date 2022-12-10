@@ -15,6 +15,7 @@ public interface IUserService {
 	public void delete(Integer id);
 	public List<User> getAll();
 	public User find(Integer id);
+	public boolean isEmailAvailable(String email, Integer exceptionId);
 	public boolean isEmailAvailable(String email);
 	public boolean isUserNameAvailable(String userName);
 	public String auth(LoginDto data) throws Exception;

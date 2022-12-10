@@ -38,26 +38,30 @@ public class UserServiceImpl implements IUserService {
 	@Transactional
 	public User create(CreateUserDto data) throws ValidationException {
 
-		if (isUserNameAvailable(data.getUserName()) && isEmailAvailable(data.getEmail())) {
-			
-			User user = new User(
-				data.getName(),
-				data.getUserName(),
-				passwordEncoder.encode(data.getPassword()),
-				data.getEmail()
-			);
+		if(!isUserNameAvailable(data.getUserName()))
+			throw new ValidationException("Nome de usuário já utilizado.");
 
-			return repository.save(user);
-		} else {
-			throw new ValidationException("Email ou nome de usuário já utilizado.");
-		}
+		if(!isEmailAvailable(data.getEmail()))
+			throw new ValidationException("Email já utilizado.");
+			
+		User user = new User(
+			data.getName(),
+			data.getUserName(),
+			passwordEncoder.encode(data.getPassword()),
+			data.getEmail()
+		);
+
+		return repository.save(user);
 	}
 
 	@Override
 	public User update(Integer id, UpdateUserDto data) {
+		
+		if(!isEmailAvailable(data.getEmail(), id))
+			throw new ValidationException("Email já utilizado.");
+		
 		User user = find(id);
 		user.setEmail(data.getEmail());
-		user.setUserName(data.getUserName());
 		user.setName(data.getName());
 		return repository.save(user);
 	}
@@ -82,6 +86,13 @@ public class UserServiceImpl implements IUserService {
 		return row.get();
 	}
 
+	@Override
+	public boolean isEmailAvailable(String email, Integer exceptionId) {
+		
+		Optional<User> user = repository.findByEmail(email);
+
+		return !user.isPresent() || exceptionId.equals(user.get().getId());
+	}
 	@Override
 	public boolean isEmailAvailable(String email) {
 		return !repository.findByEmail(email).isPresent();
