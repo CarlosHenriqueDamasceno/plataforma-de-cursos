@@ -2,7 +2,6 @@ package com.carlos.estudos.plataforma.service.contracts;
 
 import java.util.List;
 
-import javax.validation.Valid;
 import javax.validation.ValidationException;
 
 import com.carlos.estudos.plataforma.dto.CreateUserDto;
