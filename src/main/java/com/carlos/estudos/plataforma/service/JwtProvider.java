@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.carlos.estudos.plataforma.model.User;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
@@ -36,6 +37,25 @@ public class JwtProvider {
         SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
         byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(secretKey);
         return new SecretKeySpec(apiKeySecretBytes, signatureAlgorithm.getJcaName());
+    }
+
+    public boolean validateToken(String jwt){
+        Jwts
+            .parser()
+            .setSigningKey(getSigningKey())
+            .parseClaimsJws(jwt);
+        return true;
+    }
+
+
+    public String getUserNameFromJwt(String token){
+        Claims claims = Jwts
+                            .parser()
+                            .setSigningKey(getSigningKey())
+                            .parseClaimsJws(token)
+                            .getBody();
+
+        return claims.getSubject();
     }
 
 }
