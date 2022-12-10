@@ -1,4 +1,4 @@
-package com.carlos.estudos.plataforma.service;
+package com.carlos.estudos.plataforma.user.service.authentication;
 
 import java.security.Key;
 import java.util.Date;
@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
-import com.carlos.estudos.plataforma.model.User;
+import com.carlos.estudos.plataforma.user.model.User;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

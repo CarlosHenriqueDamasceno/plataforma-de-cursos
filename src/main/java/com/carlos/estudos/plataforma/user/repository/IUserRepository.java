@@ -1,11 +1,11 @@
-package com.carlos.estudos.plataforma.repository;
+package com.carlos.estudos.plataforma.user.repository;
 
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.carlos.estudos.plataforma.model.User;
+import com.carlos.estudos.plataforma.user.model.User;
 
 @Repository
 public interface IUserRepository extends JpaRepository<User, Integer>{

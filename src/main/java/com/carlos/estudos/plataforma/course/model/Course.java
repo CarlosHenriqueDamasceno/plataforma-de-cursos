@@ -1,4 +1,4 @@
-package com.carlos.estudos.plataforma.model;
+package com.carlos.estudos.plataforma.course.model;
 
 import java.util.List;
 
@@ -9,6 +9,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+
+import com.carlos.estudos.plataforma.student.model.Student;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

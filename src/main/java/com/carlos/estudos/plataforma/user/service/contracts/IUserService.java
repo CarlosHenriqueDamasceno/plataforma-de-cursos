@@ -1,13 +1,13 @@
-package com.carlos.estudos.plataforma.service.contracts;
+package com.carlos.estudos.plataforma.user.service.contracts;
 
 import java.util.List;
 
 import javax.validation.ValidationException;
 
-import com.carlos.estudos.plataforma.dto.CreateUserDto;
-import com.carlos.estudos.plataforma.dto.LoginDto;
-import com.carlos.estudos.plataforma.dto.UpdateUserDto;
-import com.carlos.estudos.plataforma.model.User;
+import com.carlos.estudos.plataforma.user.dto.CreateUserDto;
+import com.carlos.estudos.plataforma.user.dto.LoginDto;
+import com.carlos.estudos.plataforma.user.dto.UpdateUserDto;
+import com.carlos.estudos.plataforma.user.model.User;
 
 public interface IUserService {
 	public User create(CreateUserDto user) throws ValidationException;

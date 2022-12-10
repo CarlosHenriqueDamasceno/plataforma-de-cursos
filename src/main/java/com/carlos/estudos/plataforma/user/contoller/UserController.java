@@ -1,4 +1,4 @@
-package com.carlos.estudos.plataforma.controller;
+package com.carlos.estudos.plataforma.user.contoller;
 
 import java.util.List;
 
@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.carlos.estudos.plataforma.dto.CreateUserDto;
-import com.carlos.estudos.plataforma.dto.LoginDto;
-import com.carlos.estudos.plataforma.dto.UpdateUserDto;
-import com.carlos.estudos.plataforma.model.User;
-import com.carlos.estudos.plataforma.service.contracts.IUserService;
+import com.carlos.estudos.plataforma.user.dto.CreateUserDto;
+import com.carlos.estudos.plataforma.user.dto.LoginDto;
+import com.carlos.estudos.plataforma.user.dto.UpdateUserDto;
+import com.carlos.estudos.plataforma.user.model.User;
+import com.carlos.estudos.plataforma.user.service.contracts.IUserService;
 
 import lombok.AllArgsConstructor;
 

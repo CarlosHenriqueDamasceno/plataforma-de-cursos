@@ -1,4 +1,4 @@
-package com.carlos.estudos.plataforma.dto;
+package com.carlos.estudos.plataforma.user.dto;
 
 import javax.validation.constraints.NotBlank;
 

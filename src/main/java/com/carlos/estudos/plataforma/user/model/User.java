@@ -1,4 +1,4 @@
-package com.carlos.estudos.plataforma.model;
+package com.carlos.estudos.plataforma.user.model;
 
 import java.util.ArrayList;
 import java.util.Collection;

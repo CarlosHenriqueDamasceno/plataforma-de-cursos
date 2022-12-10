@@ -1,4 +1,4 @@
-package com.carlos.estudos.plataforma.service;
+package com.carlos.estudos.plataforma.user.service.authentication;
 
 import java.util.Optional;
 
@@ -8,8 +8,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.carlos.estudos.plataforma.model.User;
-import com.carlos.estudos.plataforma.repository.IUserRepository;
+import com.carlos.estudos.plataforma.user.model.User;
+import com.carlos.estudos.plataforma.user.repository.IUserRepository;
 
 import lombok.AllArgsConstructor;
 

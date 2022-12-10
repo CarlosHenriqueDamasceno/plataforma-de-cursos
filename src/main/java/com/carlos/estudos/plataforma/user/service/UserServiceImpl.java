@@ -1,4 +1,4 @@
-package com.carlos.estudos.plataforma.service;
+package com.carlos.estudos.plataforma.user.service;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,13 +14,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.carlos.estudos.plataforma.dto.CreateUserDto;
-import com.carlos.estudos.plataforma.dto.LoginDto;
-import com.carlos.estudos.plataforma.dto.UpdateUserDto;
-import com.carlos.estudos.plataforma.model.User;
-import com.carlos.estudos.plataforma.repository.IUserRepository;
-import com.carlos.estudos.plataforma.repository.RecordNotFoundException;
-import com.carlos.estudos.plataforma.service.contracts.IUserService;
+import com.carlos.estudos.plataforma.exception.RecordNotFoundException;
+import com.carlos.estudos.plataforma.user.dto.CreateUserDto;
+import com.carlos.estudos.plataforma.user.dto.LoginDto;
+import com.carlos.estudos.plataforma.user.dto.UpdateUserDto;
+import com.carlos.estudos.plataforma.user.model.User;
+import com.carlos.estudos.plataforma.user.repository.IUserRepository;
+import com.carlos.estudos.plataforma.user.service.authentication.JwtProvider;
+import com.carlos.estudos.plataforma.user.service.contracts.IUserService;
 
 import lombok.AllArgsConstructor;
 
