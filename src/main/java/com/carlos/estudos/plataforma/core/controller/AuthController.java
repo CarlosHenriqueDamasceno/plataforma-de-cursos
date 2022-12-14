@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.carlos.estudos.plataforma.core.dto.LoginDto;
 import com.carlos.estudos.plataforma.core.service.authentication.contracts.IAuthService;
-import com.carlos.estudos.plataforma.user.dto.LoginDto;
 
 import lombok.AllArgsConstructor;
 

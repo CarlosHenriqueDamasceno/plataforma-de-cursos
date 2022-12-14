@@ -7,8 +7,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import com.carlos.estudos.plataforma.core.dto.LoginDto;
 import com.carlos.estudos.plataforma.core.service.authentication.contracts.IAuthService;
-import com.carlos.estudos.plataforma.user.dto.LoginDto;
 
 import lombok.AllArgsConstructor;
 
