@@ -14,9 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.carlos.estudos.plataforma.user.dto.CreateUserDto;
-import com.carlos.estudos.plataforma.user.dto.LoginDto;
 import com.carlos.estudos.plataforma.user.dto.UpdateUserDto;
-import com.carlos.estudos.plataforma.user.model.User;
+import com.carlos.estudos.plataforma.user.dto.UserOutputDto;
 import com.carlos.estudos.plataforma.user.service.contracts.IUserService;
 
 import lombok.AllArgsConstructor;
@@ -28,29 +27,23 @@ public class UserController {
 	
 	private final IUserService service;
 
-
-	@PostMapping("/auth")
-	public String auth(@Valid @RequestBody LoginDto data) throws Exception{
-		return service.auth(data);
-	}
-
 	@GetMapping
-	public List<User> getAll() {
+	public List<UserOutputDto> getAll() {
 		return service.getAll();
 	}
 
 	@GetMapping("/{id}")
-	public User find(@PathVariable("id") Integer id) {
+	public UserOutputDto find(@PathVariable("id") Integer id) {
 		return service.find(id);
 	}
 	
 	@PostMapping
-	public User create(@Valid @RequestBody CreateUserDto data) {	
+	public UserOutputDto create(@Valid @RequestBody CreateUserDto data) {	
 		return service.create(data);
 	}
 	
 	@PutMapping("/{id}")
-	public User update(@PathVariable("id") Integer id, @Valid @RequestBody UpdateUserDto data) {
+	public UserOutputDto update(@PathVariable("id") Integer id, @Valid @RequestBody UpdateUserDto data) {
 		return service.update(id, data);
 	}
 

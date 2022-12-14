@@ -1,4 +1,4 @@
-package com.carlos.estudos.plataforma.user.service.authentication;
+package com.carlos.estudos.plataforma.core.service.authentication;
 
 import java.security.Key;
 import java.util.Date;
@@ -19,7 +19,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 @Service
 public class JwtProvider {
 
-    @Value("${app.secret_key}")
+    @Value("${app.secret-key}")
     private String secretKey;
 
     public String generateToken(Authentication authentication){

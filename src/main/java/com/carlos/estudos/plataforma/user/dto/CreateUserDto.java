@@ -20,7 +20,7 @@ public class CreateUserDto {
 	private String name;
     @NotBlank
     @Length(min = 1, max = 100)
-	private String userName; 
+	private String username; 
 	@NotBlank
     @Length(min = 1, max = 255)
     @Email

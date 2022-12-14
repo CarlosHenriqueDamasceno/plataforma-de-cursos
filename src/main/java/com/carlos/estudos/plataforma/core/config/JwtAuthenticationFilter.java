@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.carlos.estudos.plataforma.user.service.authentication.JwtProvider;
+import com.carlos.estudos.plataforma.core.service.authentication.JwtProvider;
 
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter{
@@ -38,8 +38,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
         String jwt = getJwtFromRequest(request);
 
         if(StringUtils.hasText(jwt) && jwtProvider.validateToken(jwt)){
-            String userName = jwtProvider.getUserNameFromJwt(jwt);
-            UserDetails userDetails = userDetailsService.loadUserByUsername(userName);
+            String username = jwtProvider.getUserNameFromJwt(jwt);
+            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
             authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             SecurityContextHolder.getContext().setAuthentication(authentication);

@@ -1,26 +1,21 @@
 package com.carlos.estudos.plataforma.user.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import javax.validation.ValidationException;
 
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.beans.BeanUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.carlos.estudos.plataforma.core.exception.RecordNotFoundException;
 import com.carlos.estudos.plataforma.user.dto.CreateUserDto;
-import com.carlos.estudos.plataforma.user.dto.LoginDto;
 import com.carlos.estudos.plataforma.user.dto.UpdateUserDto;
+import com.carlos.estudos.plataforma.user.dto.UserOutputDto;
 import com.carlos.estudos.plataforma.user.model.User;
 import com.carlos.estudos.plataforma.user.repository.IUserRepository;
-import com.carlos.estudos.plataforma.user.service.authentication.JwtProvider;
 import com.carlos.estudos.plataforma.user.service.contracts.IUserService;
 
 import lombok.AllArgsConstructor;
@@ -31,68 +26,77 @@ public class UserServiceImpl implements IUserService {
 
 	private final IUserRepository repository;
 	private final PasswordEncoder passwordEncoder;
-	private final AuthenticationConfiguration authenticationConfiguration;
-	private final JwtProvider jwtProvider;
 
 	@Override
-	@Transactional
-	public User create(CreateUserDto data) throws ValidationException {
-
-		if(!isUserNameAvailable(data.getUserName()))
+	public UserOutputDto create(CreateUserDto data) {
+		if (!isUserNameAvailable(data.getUsername()))
 			throw new ValidationException("Nome de usuário já utilizado.");
 
-		if(!isEmailAvailable(data.getEmail()))
+		if (!isEmailAvailable(data.getEmail()))
 			throw new ValidationException("Email já utilizado.");
-			
-		User user = new User(
-			data.getName(),
-			data.getUserName(),
-			passwordEncoder.encode(data.getPassword()),
-			data.getEmail()
-		);
 
-		return repository.save(user);
+		User user = new User();
+		BeanUtils.copyProperties(data, user);
+		user.setPassword(passwordEncoder.encode(data.getPassword()));
+		repository.save(user);
+		UserOutputDto result = new UserOutputDto();
+		BeanUtils.copyProperties(user, result);
+		return result;
 	}
 
 	@Override
-	public User update(Integer id, UpdateUserDto data) {
-		
-		if(!isEmailAvailable(data.getEmail(), id))
+	public UserOutputDto update(Integer id, UpdateUserDto data) {
+
+		if (!isEmailAvailable(data.getEmail(), id))
 			throw new ValidationException("Email já utilizado.");
-		
-		User user = find(id);
-		user.setEmail(data.getEmail());
-		user.setName(data.getName());
-		return repository.save(user);
+
+		User user = repository.findById(id)
+				.orElseThrow(() -> new RecordNotFoundException("Não foi possível encontrar o usuário."));
+		BeanUtils.copyProperties(data, user);
+		UserOutputDto result = new UserOutputDto();
+		BeanUtils.copyProperties(user, result);
+		return result;
 	}
 
 	@Override
 	public void delete(Integer id) {
-		User user = find(id);
+		User user = repository.findById(id)
+				.orElseThrow(() -> new RecordNotFoundException("Não foi possível encontrar o usuário."));
 		repository.delete(user);
 	}
 
 	@Override
-	public List<User> getAll() {
-		return repository.findAll();
+	public List<UserOutputDto> getAll() {
+		List<UserOutputDto> resultList = new ArrayList<UserOutputDto>();
+		List<User> rows = repository.findAll();
+		rows.stream().forEach(user -> {
+			UserOutputDto temp = new UserOutputDto();
+			BeanUtils.copyProperties(user, temp);
+			resultList.add(temp);
+		});
+		return resultList;
 	}
 
 	@Override
-	public User find(Integer id) {
+	public UserOutputDto find(Integer id) {
 		Optional<User> row = this.repository.findById(id);
 		if (row.isEmpty()) {
 			throw new RecordNotFoundException("Não foi possível encontrar o usuário.");
 		}
-		return row.get();
+		User user = row.get();
+		UserOutputDto result = new UserOutputDto();
+		BeanUtils.copyProperties(user, result);
+		return result;
 	}
 
 	@Override
 	public boolean isEmailAvailable(String email, Integer exceptionId) {
-		
+
 		Optional<User> user = repository.findByEmail(email);
 
 		return !user.isPresent() || exceptionId.equals(user.get().getId());
 	}
+
 	@Override
 	public boolean isEmailAvailable(String email) {
 		return !repository.findByEmail(email).isPresent();
@@ -100,21 +104,8 @@ public class UserServiceImpl implements IUserService {
 	}
 
 	@Override
-	public boolean isUserNameAvailable(String userName) {
-		return !repository.findByUserName(userName).isPresent();
+	public boolean isUserNameAvailable(String username) {
+		return !repository.findByUsername(username).isPresent();
 	}
 
-	@Override
-	public String auth(LoginDto data) throws Exception{
-
-		AuthenticationManager authenticationManager = authenticationConfiguration.getAuthenticationManager();
-
-		Authentication auth = authenticationManager.authenticate(
-			new UsernamePasswordAuthenticationToken(
-				data.getUserName(), data.getPassword()
-			)
-		);
-		SecurityContextHolder.getContext().setAuthentication(auth);
-		return jwtProvider.generateToken(auth);
-	}
 }

@@ -1,4 +1,4 @@
-package com.carlos.estudos.plataforma.user.service.authentication;
+package com.carlos.estudos.plataforma.core.service.authentication;
 
 import java.util.Optional;
 
@@ -15,15 +15,14 @@ import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
-public class UserDetailsImpl implements UserDetailsService{
+public class UserDetailsImpl implements UserDetailsService {
 
-    private final IUserRepository userRepository;
+	private final IUserRepository userRepository;
 
-    @Override
-    @Transactional(readOnly = true)
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> userOptional = userRepository.findByUserName(username);
-        return userOptional.orElseThrow(
-            () -> new UsernameNotFoundException("Usuário não encontrado"));
-    }
+	@Override
+	@Transactional(readOnly = true)
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		Optional<User> userOptional = userRepository.findByUsername(username);
+		return userOptional.orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
+	}
 }

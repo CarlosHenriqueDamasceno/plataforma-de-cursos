@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 public class LoginDto {
     @NotBlank
     @Length(min = 1, max = 100)
-    private String userName;
+    private String username;
     @NotBlank
     @Length(min = 8, max = 255)
     private String password;

@@ -10,5 +10,5 @@ import com.carlos.estudos.plataforma.user.model.User;
 @Repository
 public interface IUserRepository extends JpaRepository<User, Integer>{
 	public Optional<User> findByEmail(String email);
-	public Optional<User> findByUserName(String userName);
+	public Optional<User> findByUsername(String username);
 }

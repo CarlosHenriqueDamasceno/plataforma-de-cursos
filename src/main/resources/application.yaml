@@ -11,4 +11,4 @@ spring:
 
 
 app:
-  secret_key: "DfoK4@scR^MJ!7A7OhOP9KBd&YOq(s**RUGE$AQ$zckq0L%tHpW1*pnC6Y!2P^9C"
+  secret-key: DfoK4@scR^MJ!7A7OhOP9KBd&YOq(s**RUGE$AQ$zckq0L%tHpW1*pnC6Y!2P^9C
