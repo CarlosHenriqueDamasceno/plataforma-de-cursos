@@ -24,51 +24,43 @@ public class CourseServiceImpl implements ICourseService {
 
 	@Override
 	public CourseOutputDto create(CreateCourseDto data) {
-		Course course = new Course();
-		BeanUtils.copyProperties(data, course);
+		Course course = data.toModel();
 		repository.save(course);
-		CourseOutputDto result = new CourseOutputDto();
-		BeanUtils.copyProperties(course, result);
-		return result;
+		return new CourseOutputDto(course);
 	}
 
 	@Override
 	public CourseOutputDto update(Integer id, UpdateCourseDto data) {
-		Course course = repository.findById(id)
-				.orElseThrow(() -> new RecordNotFoundException("Não foi possível encontrar o curso."));
+		Course course = getCourseByIdOrThowException(id);
 		BeanUtils.copyProperties(data, course);
-		CourseOutputDto result = new CourseOutputDto();
-		BeanUtils.copyProperties(course, result);
-		return result;
+		repository.save(course);
+		return new CourseOutputDto(course);
 	}
 
 	@Override
 	public void delete(Integer id) {
-		Course course = repository.findById(id)
-				.orElseThrow(() -> new RecordNotFoundException("Não foi possível encontrar o curso."));
+		Course course = getCourseByIdOrThowException(id);
 		repository.delete(course);
 
 	}
 
 	@Override
 	public List<CourseOutputDto> getAll() {
-		List<CourseOutputDto> resultList = new ArrayList<CourseOutputDto>();
+		List<CourseOutputDto> resultList = new ArrayList<>();
 		List<Course> rows = repository.findAll();
-		rows.stream().forEach(course -> {
-			CourseOutputDto temp = new CourseOutputDto();
-			BeanUtils.copyProperties(course, temp);
-			resultList.add(temp);
-		});
+		rows.stream().forEach(course -> resultList.add(new CourseOutputDto(course)));
 		return resultList;
 	}
 
 	@Override
 	public CourseOutputDto find(Integer id) {
-		Course course = repository.findById(id)
+		Course course = getCourseByIdOrThowException(id);
+		return new CourseOutputDto(course);
+	}
+
+	private Course getCourseByIdOrThowException(Integer id) {
+		return repository.findById(id)
 				.orElseThrow(() -> new RecordNotFoundException("Não foi possível encontrar o curso."));
-		CourseOutputDto result = new CourseOutputDto();
-		BeanUtils.copyProperties(course, result);
-		return result;
 	}
 
 }

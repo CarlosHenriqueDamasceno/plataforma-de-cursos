@@ -35,66 +35,48 @@ public class UserServiceImpl implements IUserService {
 		if (!isEmailAvailable(data.getEmail()))
 			throw new ValidationException("Email já utilizado.");
 
-		User user = new User();
-		BeanUtils.copyProperties(data, user);
+		User user = data.toModel();
 		user.setPassword(passwordEncoder.encode(data.getPassword()));
 		repository.save(user);
-		UserOutputDto result = new UserOutputDto();
-		BeanUtils.copyProperties(user, result);
-		return result;
+		return new UserOutputDto(user);
 	}
 
 	@Override
 	public UserOutputDto update(Integer id, UpdateUserDto data) {
-
 		if (!isEmailAvailable(data.getEmail(), id))
 			throw new ValidationException("Email já utilizado.");
 
-		User user = repository.findById(id)
-				.orElseThrow(() -> new RecordNotFoundException("Não foi possível encontrar o usuário."));
+		User user = getUserByIdOrThowException(id);
 		BeanUtils.copyProperties(data, user);
-		UserOutputDto result = new UserOutputDto();
-		BeanUtils.copyProperties(user, result);
-		return result;
+		return new UserOutputDto(user);
 	}
 
 	@Override
 	public void delete(Integer id) {
-		User user = repository.findById(id)
-				.orElseThrow(() -> new RecordNotFoundException("Não foi possível encontrar o usuário."));
+		User user = getUserByIdOrThowException(id);
 		repository.delete(user);
 	}
 
 	@Override
 	public List<UserOutputDto> getAll() {
-		List<UserOutputDto> resultList = new ArrayList<UserOutputDto>();
-		List<User> rows = repository.findAll();
-		rows.stream().forEach(user -> {
-			UserOutputDto temp = new UserOutputDto();
-			BeanUtils.copyProperties(user, temp);
-			resultList.add(temp);
-		});
+		List<UserOutputDto> resultList = new ArrayList<>();
+		List<User> users = repository.findAll();
+		users.stream().forEach(user -> resultList.add(new UserOutputDto(user)));
 		return resultList;
 	}
 
 	@Override
 	public UserOutputDto find(Integer id) {
-		Optional<User> row = this.repository.findById(id);
-		if (row.isEmpty()) {
-			throw new RecordNotFoundException("Não foi possível encontrar o usuário.");
-		}
-		User user = row.get();
-		UserOutputDto result = new UserOutputDto();
-		BeanUtils.copyProperties(user, result);
-		return result;
+		User user = getUserByIdOrThowException(id);
+		return new UserOutputDto(user);
 	}
 
 	@Override
-	public boolean isEmailAvailable(String email, Integer exceptionId) {
+	public boolean isEmailAvailable(String email, Integer idToIgnore) {
 
 		Optional<User> user = repository.findByEmail(email);
 
-		return !user.isPresent() || exceptionId.equals(user.get().getId());
+		return !user.isPresent() || idToIgnore.equals(user.get().getId());
 	}
 
 	@Override
@@ -108,4 +90,9 @@ public class UserServiceImpl implements IUserService {
 		return !repository.findByUsername(username).isPresent();
 	}
 
+
+	private User getUserByIdOrThowException(Integer id) {
+		return repository.findById(id)
+				.orElseThrow(() -> new RecordNotFoundException("Não foi possível encontrar o usuário."));
+	}
 }

@@ -5,6 +5,8 @@ import javax.validation.constraints.NotBlank;
 
 import org.hibernate.validator.constraints.Length;
 
+import com.carlos.estudos.plataforma.user.model.User;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,4 +30,13 @@ public class CreateUserDto {
     @NotBlank
     @Length(min = 8, max = 255)
     private String password;
+
+    public User toModel(){
+        return new User(
+            name,
+            username,
+            password,
+            email
+        );
+    }
 }
